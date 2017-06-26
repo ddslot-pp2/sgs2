@@ -15,28 +15,26 @@ namespace network
         static constexpr unsigned short max_packet_size = 8000;
         static constexpr unsigned short packet_buf_size = 8096;
 
-        using packet_buffer_type = std::shared_ptr<std::array<char, packet_buf_size>>;
+        using packet_buffer_type = std::array<char, packet_buf_size>;
 
-        explicit session(tcp::socket socket)
-            : socket_(std::move(socket)), header_(0)
-        {
-            
-        }
+        explicit session(tcp::socket socket);
+        virtual ~session();
 
-        void start()
-        {
-            //room_.join(shared_from_this());
-            do_read_header();
-        }
+        void start();
 
     protected:
+
         void do_read_header();
         void do_read_body();
+
+        virtual void on_read_packet(std::shared_ptr<packet_buffer_type> buf, unsigned short size) {}
+        virtual void on_connect() {}
+        virtual void on_disconnect(boost::system::error_code& ec) {}
 
 
         tcp::socket socket_;
         unsigned short header_;
-        packet_buffer_type receive_buffer_;
+        std::shared_ptr<packet_buffer_type> receive_buffer_;
     };
 }
 

@@ -15,10 +15,22 @@
     <ClCompile Include="src\session\session.cpp">
       <Filter>src\session</Filter>
     </ClCompile>
+    <ClCompile Include="src\server\server.cpp">
+      <Filter>src\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io_helper.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\session\session.h">
       <Filter>src\session</Filter>
+    </ClInclude>
+    <ClInclude Include="src\server\server.h">
+      <Filter>src\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io_helper.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

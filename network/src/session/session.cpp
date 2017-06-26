@@ -2,6 +2,23 @@
 
 namespace network
 {
+    session::session(tcp::socket socket)
+        : socket_(std::move(socket)), header_(0)
+    {
+
+    }
+
+    session::~session()
+    {
+
+    }
+
+    void session::start()
+    {
+        on_connect();
+        do_read_header();
+    }
+
     void session::do_read_header()
     {
         auto self(shared_from_this());
@@ -9,8 +26,9 @@ namespace network
             boost::asio::buffer(&header_, sizeof(header_)),
             [this, self](boost::system::error_code ec, std::size_t /*length*/)
         {
-            if (ec || header_ < 0 || header_ > max_packet_size)
+            if (ec || header_ <= 0 || header_ > max_packet_size)
             {
+                on_disconnect(ec);
                 return;
             }
 
@@ -29,11 +47,11 @@ namespace network
         {
             if (ec)
             {
-                //room_.deliver(read_msg_);
+                on_disconnect(ec);
                 return;
             }
 
-            // do sth
+            on_read_packet(std::move(receive_buffer_), header_);            
 
             do_read_header();
 
