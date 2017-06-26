@@ -16,6 +16,12 @@
     <Filter Include="src\packet_processor\packet_handler">
       <UniqueIdentifier>{61144f34-669b-4532-b270-3515b41a4c13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\packet_processor\packet_handler\LOBBY">
+      <UniqueIdentifier>{04e0ff63-75b3-4572-96e0-6e81185494b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\packet_processor\packet_handler\GAME">
+      <UniqueIdentifier>{652b371a-a249-418d-98ca-0d2aa36f57df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -30,6 +36,12 @@
     <ClCompile Include="src\packet_processor\packet_handler\handle_CS_LOGIN.cpp">
       <Filter>src\packet_processor\packet_handler</Filter>
     </ClCompile>
+    <ClCompile Include="src\packet_processor\packet\LOBBY.pb.cc">
+      <Filter>src\packet_processor\packet_handler\LOBBY</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packet_processor\packet\GAME.pb.cc">
+      <Filter>src\packet_processor\packet_handler\GAME</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\server_session\server_session.h">
@@ -38,8 +50,17 @@
     <ClInclude Include="src\packet_processor\packet_processor.h">
       <Filter>src\packet_processor</Filter>
     </ClInclude>
-    <ClInclude Include="src\packet_processor\packet\sample_packet.h">
-      <Filter>src\packet_processor\packet</Filter>
+    <ClInclude Include="src\packet_processor\packet\LOBBY.pb.h">
+      <Filter>src\packet_processor\packet_handler\LOBBY</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packet_processor\packet\GAME.pb.h">
+      <Filter>src\packet_processor\packet_handler\GAME</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packet_processor\static_if.h">
+      <Filter>src\packet_processor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packet_processor\send_helper.h">
+      <Filter>src\packet_processor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

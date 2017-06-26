@@ -148,15 +148,5 @@
 		</SC_PING>
 	</GAME>
 
-	<!--
-	<GAME start="2000">
-
-	</GAME>
-
-	<SKILL start="3000">
-
-	</SKILL>
-	-->
-
 
 </packet>

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <boost/asio.hpp>
+#include "../io_helper.h"
 
 namespace network
 {
@@ -11,12 +12,6 @@ namespace network
     class session : std::enable_shared_from_this<session>
     {
     public:
-
-        static constexpr unsigned short max_packet_size = 8000;
-        static constexpr unsigned short packet_buf_size = 8096;
-
-        using packet_buffer_type = std::array<char, packet_buf_size>;
-
         explicit session(tcp::socket socket);
         virtual ~session();
 

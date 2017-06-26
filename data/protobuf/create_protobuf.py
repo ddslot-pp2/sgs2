@@ -78,10 +78,8 @@ target.write('\n')
 
 target.write('#include <memory>\n')
 target.write('#include "../../../network/src/io_helper.h"\n')
-target.write('#include "../server_session/server_session.h"\n')
+#target.write('#include "../server_session/server_session.h"\n')
 target.write('\n')
-
-target.write('using buf_ptr = std::shared_ptr<network::session::packet_buffer_type>;\n')
 
 for child in root:
 	header = 'packet/' + child.tag + '.pb.h'
@@ -90,6 +88,11 @@ for child in root:
 
 target.write('\n')
 
+target.write('using buf_ptr = std::shared_ptr<network::packet_buffer_type>;\n')
+target.write('\n')
+
+target.write('class server_session;\n')
+target.write('\n')
 #target.write('namespace network\n')
 #target.write('{\n')
 #target.write('\n')
@@ -99,15 +102,15 @@ for child in root:
 		# packet
 		if 'type' not in packet.attrib:
 			if 'cs' in packet.tag.lower():
-				target.write('\t' + "void process_" + child.tag + '_' + packet.tag + "(std::shared_ptr<server_session> session, const " + child.tag + '::' + packet.tag + '& read);\n')
+				target.write("void handle_" + child.tag + '_' + packet.tag + "(std::shared_ptr<server_session> session, const " + child.tag + '::' + packet.tag + '& read);\n')
 
 target.write('\n')
 target.write('\n')
-target.write('\tvoid register_all_functions();\n')
-target.write('\tvoid process_packet(std::shared_ptr<server_session> session, buf_ptr buffer, int size);\n')
+target.write('void register_all_functions();\n')
+target.write('void process_packet(std::shared_ptr<server_session> session, buf_ptr buffer, int size);\n')
 
 target.write('\n')
-target.write('}\n')
+#target.write('}\n')
 
 
 target.write('\n')
@@ -131,72 +134,72 @@ target.write('\n')
 #target.write('namespace network\n')
 #target.write('{\n')
 
-target.write('\ttemplate <typename T, typename = typename std::enable_if_t<std::is_base_of<::google::protobuf::Message, T>::value>>\n')
-target.write('\tvoid deserialize(std::shared_ptr<network::server_session> session, buf_ptr buffer, int size, std::function<void(std::shared_ptr<network::server_session>, const T&)> process_function)\n')
-target.write('\t{\n')
-target.write('\t\tgoogle::protobuf::io::ArrayInputStream is(buffer->data() + sizeof(unsigned short), size - sizeof(unsigned short));\n')
-target.write('\t\tT read;\n')
+target.write('template <typename T, typename = typename std::enable_if_t<std::is_base_of<::google::protobuf::Message, T>::value>>\n')
+target.write('void deserialize(std::shared_ptr<server_session> session, buf_ptr buffer, int size, std::function<void(std::shared_ptr<network::server_session>, const T&)> process_function)\n')
+target.write('{\n')
+target.write('\tgoogle::protobuf::io::ArrayInputStream is(buffer->data() + sizeof(unsigned short), size - sizeof(unsigned short));\n')
+target.write('\tT read;\n')
 target.write('\n')
 
-target.write('\t\ttry\n')
-target.write('\t\t{\n')
-target.write('\t\t\tauto r = read.ParseFromZeroCopyStream(&is);\n')
-target.write('\t\t\tif (!r)\n')
-target.write('\t\t\t{\n')
-target.write('\t\t\t\tsession->close();\n')
-target.write('\t\t\t\treturn;\n')
-target.write('\t\t\t}\n')
-target.write('\t\t\tprocess_function(session, read);\n')
-target.write('\t\t}\n')
-target.write('\t\tcatch (std::logic_error& e)\n')
-target.write('\t\t{\n')
-
-target.write('\t\t}\n')
-target.write('\t\tcatch (std::exception& e)\n');
-target.write('\t\t{\n')
-
-target.write('\t\t}\n')
-target.write('\t}\n') # end deserialize
-target.write('\n')
-target.write('\tusing packet_processor = std::function<void(std::shared_ptr<server_session> session, buf_ptr buffer, int size)>;\n')
-target.write('\tpacket_processor packet_functor[(std::numeric_limits<unsigned short>::max)()] = { nullptr };\n')
-target.write('\t auto to_index = [](opcode code)\n')
+target.write('\ttry\n')
 target.write('\t{\n')
-target.write('\t\treturn static_cast<std::underlying_type_t<opcode>>(code);\n')
-target.write('\t};\n')
+target.write('\t\tauto r = read.ParseFromZeroCopyStream(&is);\n')
+target.write('\t\tif (!r)\n')
+target.write('\t\t{\n')
+target.write('\t\t\tsession->close();\n')
+target.write('\t\t\treturn;\n')
+target.write('\t\t}\n')
+target.write('\t\tprocess_function(session, read);\n')
+target.write('\t}\n')
+target.write('\tcatch (std::logic_error& e)\n')
+target.write('\t{\n')
+
+target.write('\t}\n')
+target.write('\tcatch (std::exception& e)\n');
+target.write('\t{\n')
+
+target.write('\t}\n')
+target.write('}\n') # end deserialize
+target.write('\n')
+target.write('using packet_processor = std::function<void(std::shared_ptr<server_session> session, buf_ptr buffer, int size)>;\n')
+target.write('packet_processor packet_functor[(std::numeric_limits<unsigned short>::max)()] = { nullptr };\n')
+target.write(' auto to_index = [](opcode code)\n')
+target.write('{\n')
+target.write('\treturn static_cast<std::underlying_type_t<opcode>>(code);\n')
+target.write('};\n')
 
 target.write('\n')
 
-target.write('\tvoid register_all_functions()\n')
+target.write('void register_all_functions()\n')
+target.write('{\n')
+target.write('\tfor (auto& functor : packet_functor)\n')
 target.write('\t{\n')
-target.write('\t\tfor (auto& functor : packet_functor)\n')
+target.write('\t\tfunctor = [](std::shared_ptr<server_session> session, buf_ptr const buffer, int size)\n')
 target.write('\t\t{\n')
-target.write('\t\t\tfunctor = [](std::shared_ptr<server_session> session, buf_ptr const buffer, int size)\n')
-target.write('\t\t\t{\n')
-target.write('\t\t\t\treturn;\n')
-target.write('\t\t\t};\n')
-target.write('\t\t}\n')
+target.write('\t\t\treturn;\n')
+target.write('\t\t};\n')
+target.write('\t}\n')
 
 for child in root:
 	for packet in child:
 		# packet
 		if 'type' not in packet.attrib:
 			if 'cs' in packet.tag.lower():
-				target.write('\t\t' + "packet_functor[to_index(opcode::" + packet.tag + ')] = [](std::shared_ptr<server_session> session, buf_ptr buffer, int size) { deserialize<' + child.tag + '::' + packet.tag + '>(std::move(session), std::move(buffer), size, process_' + child.tag + '_' +  packet.tag + '); };\n')
+				target.write('\t' + "packet_functor[to_index(opcode::" + packet.tag + ')] = [](std::shared_ptr<server_session> session, buf_ptr buffer, int size) { deserialize<' + child.tag + '::' + packet.tag + '>(std::move(session), std::move(buffer), size, handle_' + child.tag + '_' +  packet.tag + '); };\n')
 
-target.write('\t}\n')
+target.write('}\n')
 
 target.write('\n')
-target.write('\tvoid process_packet(std::shared_ptr<server_session> session, buf_ptr buffer, int size)\n')
+target.write('void handle_packet(std::shared_ptr<server_session> session, buf_ptr buffer, int size)\n')
+target.write('{\n')
+target.write('\tif (size < sizeof(opcode) || size - sizeof(unsigned short) < 0)\n')
 target.write('\t{\n')
-target.write('\t\tif (size < sizeof(opcode) || size - sizeof(unsigned short) < 0)\n')
-target.write('\t\t{\n')
-target.write('\t\t\treturn;\n')
-target.write('\t\t}\n')
-target.write('\n')
-target.write('\t\tauto packet_num = *reinterpret_cast<opcode*>(buffer->data());\n')
-target.write('\t\tpacket_functor[to_index(packet_num)](std::move(session), std::move(buffer), size);\n')
+target.write('\t\treturn;\n')
 target.write('\t}\n')
+target.write('\n')
+target.write('\tauto packet_num = *reinterpret_cast<opcode*>(buffer->data());\n')
+target.write('\tpacket_functor[to_index(packet_num)](std::move(session), std::move(buffer), size);\n')
+target.write('}\n')
 
 #target.write('}\n')
 #target.write('\n')
@@ -257,7 +260,7 @@ for f in files:
 os.chdir(PROTOC_PATH)
 for proto in protos:
 	print(proto)
-	cmd =  "protoc "  + ' -I="../../../../../data/protobuf" --cpp_out="../../../../../sgs/src/packet_processor/packet" ' +  "../../../../../data/protobuf/" + proto
+	cmd =  "protoc "  + ' -I="../../../../../data/protobuf" --cpp_out="../../../../../sgs2/src/packet_processor/packet" ' +  "../../../../../data/protobuf/" + proto
 	os.system(cmd)
     #cmd =  "protoc "  + ' -I="../../../../../proto" --csharp_out="../../../../../proto/csharp_out/packet" ' +  "../../../../../proto/" + proto
     #os.system(cmd)
