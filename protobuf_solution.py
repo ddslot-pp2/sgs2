@@ -19,7 +19,7 @@ os.chdir(script_dir)
 def create_vs_solution_batch():
     print ("create_vs_solution_batch")
     target = open("./protobuf-master/cmake/build/solution/create_vs_solution.bat", 'w')
-    target.write('cmake -G "Visual Studio 14 2015 Win64" ^ -DCMAKE_INSTALL_PREFIX=../../../../install ^ -Dprotobuf_BUILD_TESTS=OFF ^ ../..')
+    target.write('cmake -G "Visual Studio 14 2015 Win64" ^ -DCMAKE_INSTALL_PREFIX=../../../../install ^ -protobuf_MSVC_STATIC_RUNTIME=ON ^ -Dprotobuf_BUILD_TESTS=OFF ^ ../..')
     target.close()
 
 def execute_create_vs_solution_batch():
