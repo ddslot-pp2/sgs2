@@ -24,10 +24,22 @@
     <ClCompile Include="src\server_session\server_session.cpp">
       <Filter>src\server_session</Filter>
     </ClCompile>
+    <ClCompile Include="src\packet_processor\packet_processor.cpp">
+      <Filter>src\packet_processor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packet_processor\packet_handler\handle_CS_LOGIN.cpp">
+      <Filter>src\packet_processor\packet_handler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\server_session\server_session.h">
       <Filter>src\server_session</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packet_processor\packet_processor.h">
+      <Filter>src\packet_processor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packet_processor\packet\sample_packet.h">
+      <Filter>src\packet_processor\packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<packet>
+
+	<LOBBY start="1000">
+		<!--게임 데이터 타입위한 enum값-->
+		<GameDataType type="enum">
+			 <all_data/>
+			 <item_data/>
+			 <hero_stat_data/>
+		</GameDataType>
+
+		<!-- 로그인 위한 패킷-->
+		<CS_LOG_IN>
+			<id type="string"/>
+			<password type="string"/>
+		</CS_LOG_IN>
+
+		<SC_LOG_IN>
+			<result type="bool"/>
+			<timestamp type="int64"/>
+			<ec type="string"/>
+		</SC_LOG_IN>
+
+		<CS_SET_NICKNAME>
+			<nickname type="string"/>
+			<object_id type="int32"/>
+		</CS_SET_NICKNAME>
+
+		<SC_SET_NICKNAME>
+			<nickname type="string"/>
+			<object_id type="int32"/>
+		</SC_SET_NICKNAME>
+
+	</LOBBY>
+
+	<GAME start="2000">
+		
+		<USER_INFO struct = "true">
+			<key type="int64"/>
+			<hp type="int32"/>
+			<pos_x type="float"/>
+			<pos_y type="float"/>
+			<pos_z type="float"/>
+		</USER_INFO>
+
+		<CS_ENTER_FIELD>
+			<!-- <field_id type="int32"/> -->
+		</CS_ENTER_FIELD>
+
+		<SC_ENTER_FIELD>
+			<result type="bool"/>
+			<key type="int64"/>
+			<pos_x type="float"/>
+			<pos_y type="float"/>
+			<pos_z type="float"/>
+			<ec type="string"/>
+			<user_infos type="USER_INFO" repeated="true"/>
+		</SC_ENTER_FIELD>
+
+		<SC_NOTI_ENTER_FIELD>
+			<key type="int64"/>
+			<hp type="int32"/>
+			<pos_x type="float"/>
+			<pos_y type="float"/>
+			<pos_z type="float"/>
+			<timestamp type="int64"/>
+		</SC_NOTI_ENTER_FIELD>
+
+		<CS_LEAVE_FIELD>
+			<key type="int64"/>
+		</CS_LEAVE_FIELD>
+
+		<SC_NOTI_LEAVE_FIELD>
+			<key type="int64"/>
+		</SC_NOTI_LEAVE_FIELD>
+
+		<CS_MOVE_OBJECT>
+			<pos_x type="float"/>
+			<pos_y type="float"/>
+			<pos_z type="float"/>
+			<rot_x type="float"/>
+			<rot_y type="float"/>
+			<rot_z type="float"/>
+			<rot_w type="float"/>
+			<timestamp type="int64"/>
+		</CS_MOVE_OBJECT>
+
+		<SC_NOTI_MOVE_OBJECT>
+			<key type="int64"/>
+			<pos_x type="float"/>
+			<pos_y type="float"/>
+			<pos_z type="float"/>
+			<rot_x type="float"/>
+			<rot_y type="float"/>
+			<rot_z type="float"/>
+			<rot_w type="float"/>
+			<timestamp type="int64"/>
+		</SC_NOTI_MOVE_OBJECT>
+
+		<CS_USE_SKILL>
+			<skill_id type="int32"/>
+
+			<forward_x type="float"/>
+			<forward_y type="float"/>
+			<forward_z type="float"/>
+
+			<rot_x type="float"/>
+			<rot_y type="float"/>
+			<rot_z type="float"/>
+			<rot_w type="float"/>
+
+		</CS_USE_SKILL>
+
+		<SC_NOTI_USE_SKILL>
+			<key type="int64"/>
+			<skill_key type="int64"/>
+			<skill_id type="int32"/>
+		   	<pos_x type="float"/>
+			<pos_y type="float"/>
+			<pos_z type="float"/>
+
+	        <forward_x type="float"/>
+			<forward_y type="float"/>
+			<forward_z type="float"/>
+
+			<rot_x type="float"/>
+			<rot_y type="float"/>
+			<rot_z type="float"/>
+			<rot_w type="float"/>
+
+			<distance type="float"/>
+
+			<speed type="float"/>
+		</SC_NOTI_USE_SKILL>
+
+		<SC_NOTI_DESTROY_SKILL>
+			<skill_key type="int64"/>
+			<target_key type="int64"/>
+			<damage type="float"/>
+		</SC_NOTI_DESTROY_SKILL>
+
+
+		<CS_PING>
+			<timestamp type="int64"/>
+		</CS_PING>
+		<SC_PING>
+			<timestamp type="int64"/>
+		</SC_PING>
+	</GAME>
+
+	<!--
+	<GAME start="2000">
+
+	</GAME>
+
+	<SKILL start="3000">
+
+	</SKILL>
+	-->
+
+
+</packet>
