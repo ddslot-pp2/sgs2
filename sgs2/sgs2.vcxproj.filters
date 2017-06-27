@@ -16,11 +16,11 @@
     <Filter Include="src\packet_processor\packet_handler">
       <UniqueIdentifier>{61144f34-669b-4532-b270-3515b41a4c13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\packet_processor\packet_handler\LOBBY">
-      <UniqueIdentifier>{04e0ff63-75b3-4572-96e0-6e81185494b4}</UniqueIdentifier>
+    <Filter Include="src\packet_processor\packet\GAME">
+      <UniqueIdentifier>{f6b9a859-33f4-48c8-b4da-b2c63c147558}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\packet_processor\packet_handler\GAME">
-      <UniqueIdentifier>{652b371a-a249-418d-98ca-0d2aa36f57df}</UniqueIdentifier>
+    <Filter Include="src\packet_processor\packet\LOBBY">
+      <UniqueIdentifier>{4caefc8c-8435-4ece-a116-bba5f73fc2c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,10 +37,10 @@
       <Filter>src\packet_processor\packet_handler</Filter>
     </ClCompile>
     <ClCompile Include="src\packet_processor\packet\LOBBY.pb.cc">
-      <Filter>src\packet_processor\packet_handler\LOBBY</Filter>
+      <Filter>src\packet_processor\packet\LOBBY</Filter>
     </ClCompile>
     <ClCompile Include="src\packet_processor\packet\GAME.pb.cc">
-      <Filter>src\packet_processor\packet_handler\GAME</Filter>
+      <Filter>src\packet_processor\packet\GAME</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,17 +50,17 @@
     <ClInclude Include="src\packet_processor\packet_processor.h">
       <Filter>src\packet_processor</Filter>
     </ClInclude>
-    <ClInclude Include="src\packet_processor\packet\LOBBY.pb.h">
-      <Filter>src\packet_processor\packet_handler\LOBBY</Filter>
-    </ClInclude>
-    <ClInclude Include="src\packet_processor\packet\GAME.pb.h">
-      <Filter>src\packet_processor\packet_handler\GAME</Filter>
-    </ClInclude>
     <ClInclude Include="src\packet_processor\static_if.h">
       <Filter>src\packet_processor</Filter>
     </ClInclude>
     <ClInclude Include="src\packet_processor\send_helper.h">
       <Filter>src\packet_processor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packet_processor\packet\LOBBY.pb.h">
+      <Filter>src\packet_processor\packet\LOBBY</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packet_processor\packet\GAME.pb.h">
+      <Filter>src\packet_processor\packet\GAME</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

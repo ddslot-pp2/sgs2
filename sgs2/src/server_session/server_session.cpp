@@ -10,7 +10,7 @@ server_session::~server_session()
 
 }
 
-void server_session::on_read_packet(std::shared_ptr<packet_buffer_type> buf, unsigned short size)
+void server_session::on_read_packet(std::shared_ptr<network::packet_buffer_type> buf, unsigned short size)
 {
 
 }
