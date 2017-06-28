@@ -7,7 +7,7 @@
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 
 template <class Protobuf>
-bool serialize_packet(network::opcode opcode, Protobuf protobuf, char(&buffer)[network::packet_buf_size], int& written)
+bool serialize_packet(opcode opcode, Protobuf protobuf, char(&buffer)[network::packet_buf_size], int& written)
 {
   auto ret = false;
   static_if<std::is_pointer<Protobuf>::value>([&](auto f)
@@ -26,7 +26,7 @@ bool serialize_packet(network::opcode opcode, Protobuf protobuf, char(&buffer)[n
 }
 
 template <class Session, class Protobuf>
-void send_packet(Session session, network::opcode opcode, Protobuf protobuf)
+void send_packet(Session session, opcode opcode, Protobuf protobuf)
 {
   char buffer[network::packet_buf_size] = { 0, };
   auto written = 0;
