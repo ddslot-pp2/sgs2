@@ -25,9 +25,9 @@ namespace network
         void start();
         void close();
 
-    protected:
-
         void send(send_buf_ptr buf);
+
+    protected:
         void do_write();
 
         void do_read_header();
