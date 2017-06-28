@@ -4,7 +4,7 @@
 #include "../opcode.h"
 #include "../send_helper.h"
 
-void handle_CS_PING(std::shared_ptr<server_session> session, const GAME::CS_PING& read)
+void handle_CS_LOG_IN(std::shared_ptr<server_session> session, const LOBBY::CS_LOG_IN& read)
 {
 
 }

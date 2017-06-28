@@ -29,8 +29,8 @@ void deserialize(std::shared_ptr<server_session> session, buf_ptr buffer, int si
 	}
 }
 
-using packet_processor = std::function<void(std::shared_ptr<server_session> session, buf_ptr buffer, int size)>;
-packet_processor packet_handlers[(std::numeric_limits<unsigned short>::max)()] = { nullptr };
+using packet_handler = std::function<void(std::shared_ptr<server_session> session, buf_ptr buffer, int size)>;
+packet_handler packet_handlers[(std::numeric_limits<unsigned short>::max)()] = { nullptr };
  auto to_index = [](opcode code)
 {
 	return static_cast<std::underlying_type_t<opcode>>(code);
