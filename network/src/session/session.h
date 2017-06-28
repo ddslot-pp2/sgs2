@@ -4,6 +4,13 @@
 #include <memory>
 #include <boost/asio.hpp>
 #include "../io_helper.h"
+#include <deque>
+
+#ifndef __linux__ 
+#include <ppl.h>
+#include <concurrent_queue.h>
+using namespace concurrency;
+#endif
 
 namespace network
 {
@@ -20,6 +27,9 @@ namespace network
 
     protected:
 
+        void send(send_buf_ptr buf);
+        void do_write();
+
         void do_read_header();
         void do_read_body();
 
@@ -27,10 +37,18 @@ namespace network
         virtual void on_connect() {}
         virtual void on_disconnect(boost::system::error_code& ec) {}
 
+        void handle_error_code(boost::system::error_code& ec);
 
         tcp::socket socket_;
         unsigned short header_;
         std::shared_ptr<packet_buffer_type> receive_buffer_;
+
+        std::atomic_flag write_in_progress_ = ATOMIC_FLAG_INIT;
+
+#ifndef __linux__ 
+        concurrent_queue<send_buf_ptr> q_;
+#endif
+
     };
 }
 

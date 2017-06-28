@@ -203,7 +203,6 @@ target.write('\n')
 target.write('\tauto packet_num = *reinterpret_cast<opcode*>(buffer->data());\n')
 target.write('\n')
 target.write('\tpacket_handlers[to_index(packet_num)](std::move(session), std::move(buffer), size);\n')
-target.write('\n')
 target.write('}\n')
 
 #target.write('}\n')
