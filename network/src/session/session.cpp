@@ -26,12 +26,10 @@ namespace network
 
     void session::send(send_buf_ptr buf)
     {
+        //wprintf(L"@@SEND@@\n");
         q_.push(buf);
-        if (write_in_progress_.test_and_set(std::memory_order_acquire))
-        {
-            return;
-        }
 
+        //wprintf(L"@@do_write@@\n");
         do_write();
     }
 
@@ -74,6 +72,12 @@ namespace network
 
     void session::do_write()
     {
+        if (write_in_progress_.test_and_set(std::memory_order_acquire))
+        {
+            //wprintf(L"write in progressing -> return@@\n");
+            return;
+        }
+
         auto self(shared_from_this());
 
         send_buf_ptr send_buf = nullptr;
@@ -85,28 +89,38 @@ namespace network
                     send_buf->size),
                 [this, self](boost::system::error_code ec, std::size_t length)
             {
-                //std::wcout << L"최종 보낸값: " << length;
+                wprintf(L"send complete:%d\n", length);
+                write_in_progress_.clear(std::memory_order_release);
+                
                 if (ec)
                 {
+                    wprintf(L"send error");
+                 
                     handle_error_code(ec);
                     return;
                 }
 
-                if (!q_.empty())
+                //wprintf(L"q size: %d", q_.unsafe_size());
+
+                if (q_.empty())
                 {
-                    do_write();
-                    
+                    wprintf(L"retur q is empty");
+                    return;
                 }
+
+                do_write();
+                
             });
         }
         else
         {
+            //wprintf(L"release flag\n");
             write_in_progress_.clear(std::memory_order_release);
         }
     }
 
     void session::handle_error_code(boost::system::error_code& ec)
     {
-
+        wprintf(L"handle_error_code called\n");
     }
 }

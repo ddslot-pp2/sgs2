@@ -24,4 +24,23 @@ void handle_CS_LOG_IN(std::shared_ptr<server_session> session, const LOBBY::CS_L
     send.set_timestamp(200000);
 
     send_packet(session, opcode::SC_LOG_IN, send);
+    //return;
+
+    std::vector<std::thread> v;
+    for (auto thread_count = 0; thread_count < 4; ++thread_count)
+    {
+        v.emplace_back([session, send] {
+            for (auto i = 0; i < 5; ++i)
+            {
+                //wprintf(L"ÆÐÅ¶ º¸³¿: %d\n", i);
+                send_packet(session, opcode::SC_LOG_IN, send);
+            }
+        });
+    }
+
+    for (auto& t : v)
+    {
+        t.join();
+    }
+    
 }
