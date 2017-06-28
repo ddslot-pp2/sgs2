@@ -7,8 +7,18 @@
     <Filter Include="src">
       <UniqueIdentifier>{45c5acb4-715a-4413-a23d-f327ae1b8307}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\string_helper">
+    <Filter Include="src\locale">
       <UniqueIdentifier>{78d2b73d-8a76-465e-80d3-506389811741}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\locale\string_helper.h">
+      <Filter>src\locale</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\locale\string_helper.cpp">
+      <Filter>src\locale</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

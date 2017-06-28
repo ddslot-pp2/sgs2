@@ -5,12 +5,12 @@ namespace network
     session::session(tcp::socket socket)
         : socket_(std::move(socket)), header_(0)
     {
-
+        printf("session ctor called\n");
     }
 
     session::~session()
     {
-
+        printf("session dtor called\n");
     }
 
     void session::start()
@@ -47,7 +47,6 @@ namespace network
                 on_disconnect(ec);
                 return;
             }
-
             do_read_body();
         });
     }
@@ -61,12 +60,12 @@ namespace network
             boost::asio::buffer(receive_buffer_->data(), header_),
             [this, self](boost::system::error_code ec, std::size_t /*length*/)
         {
+           
             if (ec)
             {
                 on_disconnect(ec);
                 return;
             }
-
             on_read_packet(std::move(receive_buffer_), header_);            
 
             do_read_header();
@@ -84,8 +83,9 @@ namespace network
             boost::asio::async_write(socket_,
                 boost::asio::buffer(send_buf->buf.data(),
                     send_buf->size),
-                [this, self](boost::system::error_code ec, std::size_t /*length*/)
+                [this, self](boost::system::error_code ec, std::size_t length)
             {
+                //std::wcout << L"최종 보낸값: " << length;
                 if (ec)
                 {
                     handle_error_code(ec);

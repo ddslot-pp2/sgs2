@@ -16,7 +16,7 @@ namespace network
 {
     using boost::asio::ip::tcp;
 
-    class session : std::enable_shared_from_this<session>
+    class session : public std::enable_shared_from_this<session>
     {
     public:
         explicit session(tcp::socket socket);

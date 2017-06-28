@@ -34,22 +34,25 @@ namespace network
             {
                 if (!ec)
                 {
+                    printf("접속 성공\n");
                     socket_.set_option(boost::asio::ip::tcp::no_delay(false));
                     std::make_shared<T>(std::move(socket_))->start();
-                    //session->on_connect();
+                    //sess->on_connect();
                 }
                 else
                 {
                     if (ec.value() == boost::asio::error::operation_aborted)
                     {
-                        //network::log((std::wstring(__FUNCTIONW__) + L" [" + core::from_bytes(ec.message()) + L"]").c_str());
+                        
                     }
                     else
                     {
-                        //network::error((std::wstring(__FUNCTIONW__) + L" [" + core::from_bytes(ec.message()) + L"]").c_str());
+                        
                     }
+
                     return;
                 }
+
                 do_accept();
             });
         }

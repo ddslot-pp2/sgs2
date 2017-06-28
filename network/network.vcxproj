@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\io_helper.cpp" />
-    <ClCompile Include="src\server\server.cpp" />
     <ClCompile Include="src\session\session.cpp" />
   </ItemGroup>
   <ItemGroup>

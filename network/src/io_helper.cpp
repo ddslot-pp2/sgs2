@@ -42,7 +42,6 @@ namespace network
 
                 if (ec)
                 {
-
                     //
 
                 }

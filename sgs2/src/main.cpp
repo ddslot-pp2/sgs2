@@ -2,19 +2,17 @@
 #include "server/server.h"
 #include "io_helper.h"
 #include "server_session/server_session.h"
+#include "packet_processor/packet_processor.h"
 
 int main()
 {
-    printf("hello server\n");
-
     // 로케일 설정
     // processor => process로 수정 필요!
     std::locale::global(std::locale(""));
     std::wcout.imbue(std::locale(""));
 
     // 패킷 등록
-    //network::register_all_functions();
-
+    register_handlers();
     network::initialize();
 
     // 필드 생성

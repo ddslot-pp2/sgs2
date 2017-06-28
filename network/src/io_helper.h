@@ -13,7 +13,7 @@ namespace network
     struct send_buffer
     {
         packet_buffer_type buf;
-        int size;
+        unsigned short size = 0;
     };
 
     using send_buf_ptr = std::shared_ptr<send_buffer>;

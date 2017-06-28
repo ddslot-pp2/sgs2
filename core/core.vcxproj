@@ -129,6 +129,12 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\locale\string_helper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\locale\string_helper.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

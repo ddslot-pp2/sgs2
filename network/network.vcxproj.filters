@@ -15,9 +15,6 @@
     <ClCompile Include="src\session\session.cpp">
       <Filter>src\session</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\server.cpp">
-      <Filter>src\server</Filter>
-    </ClCompile>
     <ClCompile Include="src\io_helper.cpp">
       <Filter>src</Filter>
     </ClCompile>

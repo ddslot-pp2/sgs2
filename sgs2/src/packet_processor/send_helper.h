@@ -7,7 +7,7 @@
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 
 template <class Protobuf>
-bool serialize_packet(opcode opcode, Protobuf protobuf, char* buffer, int& written)
+bool serialize_packet(opcode opcode, Protobuf protobuf, char* buffer, unsigned short& written)
 {
     auto ret = false;
     static_if<std::is_pointer<Protobuf>::value>([&](auto f)
@@ -28,18 +28,19 @@ bool serialize_packet(opcode opcode, Protobuf protobuf, char* buffer, int& writt
 template <class Session, class Protobuf>
 void send_packet(Session session, opcode opcode, Protobuf protobuf)
 {
-    //char buffer[network::packet_buf_size] = { 0, };
     using namespace network;
     auto buffer = std::make_shared<send_buffer>();
 
     // copy opcode
-    std::memcpy(buffer->buf.data(), &opcode, sizeof(unsigned short));
+    std::memcpy(buffer->buf.data() + sizeof(unsigned short), &opcode, sizeof(unsigned short));
 
-    auto r = serialize_packet(opcode, protobuf, buffer->buf.data() + sizeof(unsigned short), buffer->size);
+    auto r = serialize_packet(opcode, protobuf, buffer->buf.data() + sizeof(unsigned short)*2, buffer->size);
 
     if (r)
     {
-        buffer->size = buffer->size + sizeof(unsigned short);
+        buffer->size = buffer->size + sizeof(unsigned short) * 2;
+
+        std::memcpy(buffer->buf.data(), &(buffer->size), sizeof(unsigned short));
         session->send(buffer);
     }
     else
