@@ -7,10 +7,10 @@
 
 void handle_CS_LOG_IN(std::shared_ptr<server_session> session, const LOBBY::CS_LOG_IN& read)
 {
-    auto id = core::utf8_to_wstring(read.id().c_str());
+    auto id = core::utf8_to_wstring(read.id());
     wprintf(L"id: %s\n", id.c_str());
 
-    auto password = core::utf8_to_wstring(read.password().c_str());
+    auto password = core::utf8_to_wstring(read.password());
     wprintf(L"password: %s\n", password.c_str());
 
     auto error_message = "";

@@ -4,8 +4,10 @@
 
 namespace core
 {
-    std::wstring utf8_to_wstring(const char* utf8_string);
+    std::wstring utf8_to_wstring(const std::string& str);
 
+    std::wstring    string_to_wstring(std::string bytes);
+    std::string     wstring_to_string(std::wstring wstr);
 }
 
 #endif
