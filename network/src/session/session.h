@@ -16,6 +16,7 @@ namespace network
         virtual ~session();
 
         void start();
+        void close();
 
     protected:
 

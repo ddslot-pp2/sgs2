@@ -102,12 +102,13 @@ for child in root:
 		# packet
 		if 'type' not in packet.attrib:
 			if 'cs' in packet.tag.lower():
-				target.write("void handle_" + child.tag + '_' + packet.tag + "(std::shared_ptr<server_session> session, const " + child.tag + '::' + packet.tag + '& read);\n')
+				#target.write("void handle_" + child.tag + '_' + packet.tag + "(std::shared_ptr<server_session> session, const " + child.tag + '::' + packet.tag + '& read);\n')
+				target.write("void handle_" + packet.tag + "(std::shared_ptr<server_session> session, const " + child.tag + '::' + packet.tag + '& read);\n')
 
 target.write('\n')
 target.write('\n')
-target.write('void register_all_functions();\n')
-target.write('void process_packet(std::shared_ptr<server_session> session, buf_ptr buffer, int size);\n')
+target.write('void register_handlers();\n')
+target.write('void handle_packet(std::shared_ptr<server_session> session, buf_ptr buffer, int size);\n')
 
 target.write('\n')
 #target.write('}\n')
@@ -127,6 +128,7 @@ target.write('#include "packet_processor.h"\n')
 target.write('#include <array>\n')
 target.write('#include <google/protobuf/io/zero_copy_stream_impl_lite.h>\n')
 target.write('#include "opcode.h"\n')
+target.write('#include "../server_session/server_session.h"\n')
 
 target.write('\n')
 target.write('\n')
@@ -135,7 +137,7 @@ target.write('\n')
 #target.write('{\n')
 
 target.write('template <typename T, typename = typename std::enable_if_t<std::is_base_of<::google::protobuf::Message, T>::value>>\n')
-target.write('void deserialize(std::shared_ptr<server_session> session, buf_ptr buffer, int size, std::function<void(std::shared_ptr<network::server_session>, const T&)> process_function)\n')
+target.write('void deserialize(std::shared_ptr<server_session> session, buf_ptr buffer, int size, std::function<void(std::shared_ptr<server_session>, const T&)> process_function)\n')
 target.write('{\n')
 target.write('\tgoogle::protobuf::io::ArrayInputStream is(buffer->data() + sizeof(unsigned short), size - sizeof(unsigned short));\n')
 target.write('\tT read;\n')
@@ -162,7 +164,7 @@ target.write('\t}\n')
 target.write('}\n') # end deserialize
 target.write('\n')
 target.write('using packet_processor = std::function<void(std::shared_ptr<server_session> session, buf_ptr buffer, int size)>;\n')
-target.write('packet_processor packet_functor[(std::numeric_limits<unsigned short>::max)()] = { nullptr };\n')
+target.write('packet_processor packet_handlers[(std::numeric_limits<unsigned short>::max)()] = { nullptr };\n')
 target.write(' auto to_index = [](opcode code)\n')
 target.write('{\n')
 target.write('\treturn static_cast<std::underlying_type_t<opcode>>(code);\n')
@@ -170,11 +172,11 @@ target.write('};\n')
 
 target.write('\n')
 
-target.write('void register_all_functions()\n')
+target.write('void register_handlers()\n')
 target.write('{\n')
-target.write('\tfor (auto& functor : packet_functor)\n')
+target.write('\tfor (auto& handler : packet_handlers)\n')
 target.write('\t{\n')
-target.write('\t\tfunctor = [](std::shared_ptr<server_session> session, buf_ptr const buffer, int size)\n')
+target.write('\t\thandler = [](std::shared_ptr<server_session> session, buf_ptr const buffer, int size)\n')
 target.write('\t\t{\n')
 target.write('\t\t\treturn;\n')
 target.write('\t\t};\n')
@@ -185,7 +187,8 @@ for child in root:
 		# packet
 		if 'type' not in packet.attrib:
 			if 'cs' in packet.tag.lower():
-				target.write('\t' + "packet_functor[to_index(opcode::" + packet.tag + ')] = [](std::shared_ptr<server_session> session, buf_ptr buffer, int size) { deserialize<' + child.tag + '::' + packet.tag + '>(std::move(session), std::move(buffer), size, handle_' + child.tag + '_' +  packet.tag + '); };\n')
+				#target.write('\t' + "packet_handlers[to_index(opcode::" + packet.tag + ')] = [](std::shared_ptr<server_session> session, buf_ptr buffer, int size) { deserialize<' + child.tag + '::' + packet.tag + '>(std::move(session), std::move(buffer), size, handle_' + child.tag + '_' +  packet.tag + '); };\n')
+				target.write('\t' + "packet_handlers[to_index(opcode::" + packet.tag + ')] = [](std::shared_ptr<server_session> session, buf_ptr buffer, int size) { deserialize<' + child.tag + '::' + packet.tag + '>(std::move(session), std::move(buffer), size, handle_' + packet.tag + '); };\n')
 
 target.write('}\n')
 
@@ -198,7 +201,9 @@ target.write('\t\treturn;\n')
 target.write('\t}\n')
 target.write('\n')
 target.write('\tauto packet_num = *reinterpret_cast<opcode*>(buffer->data());\n')
-target.write('\tpacket_functor[to_index(packet_num)](std::move(session), std::move(buffer), size);\n')
+target.write('\n')
+target.write('\tpacket_handlers[to_index(packet_num)](std::move(session), std::move(buffer), size);\n')
+target.write('\n')
 target.write('}\n')
 
 #target.write('}\n')

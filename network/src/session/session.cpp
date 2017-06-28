@@ -19,6 +19,11 @@ namespace network
         do_read_header();
     }
 
+    void session::close()
+    {
+
+    }
+
     void session::do_read_header()
     {
         auto self(shared_from_this());
