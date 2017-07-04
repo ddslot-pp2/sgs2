@@ -42,9 +42,16 @@ namespace network
         {
             if (ec || header_ <= 0 || header_ > max_packet_size)
             {
+                if (header_ == 0)
+                {
+                    on_disconnect();
+                    return;
+                }
+
                 on_disconnect(ec);
                 return;
             }
+
             do_read_body();
         });
     }
@@ -56,11 +63,17 @@ namespace network
         auto self(shared_from_this());
         boost::asio::async_read(socket_,
             boost::asio::buffer(receive_buffer_->data(), header_),
-            [this, self](boost::system::error_code ec, std::size_t /*length*/)
+            [this, self](boost::system::error_code ec, std::size_t length)
         {
            
-            if (ec)
+            if (ec || length <= 0 || length > max_packet_size)
             {
+                if (length == 0)
+                {
+                    on_disconnect();
+                    return;
+                }
+
                 on_disconnect(ec);
                 return;
             }
@@ -121,6 +134,7 @@ namespace network
 
     void session::handle_error_code(boost::system::error_code& ec)
     {
+        q_.clear();
         wprintf(L"handle_error_code called\n");
     }
 }

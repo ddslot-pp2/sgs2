@@ -303,7 +303,7 @@ for child in root:
 	for packet in child:
 		if 'type' not in packet.attrib and 'struct' not in packet.attrib:
 			target.write('\t' + packet.tag + ' = ' + str(value) + ',\n')
-			value = int(value) + 1	
+			value = int(value) + 1
 
 
 target.write('  };\n')

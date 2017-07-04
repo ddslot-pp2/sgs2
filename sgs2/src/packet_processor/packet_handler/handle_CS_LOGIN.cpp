@@ -24,8 +24,9 @@ void handle_CS_LOG_IN(std::shared_ptr<server_session> session, const LOBBY::CS_L
     send.set_timestamp(200000);
 
     send_packet(session, opcode::SC_LOG_IN, send);
-    //return;
+    return;
 
+    /*
     std::vector<std::thread> v;
     for (auto thread_count = 0; thread_count < 4; ++thread_count)
     {
@@ -42,5 +43,6 @@ void handle_CS_LOG_IN(std::shared_ptr<server_session> session, const LOBBY::CS_L
     {
         t.join();
     }
+    */
     
 }

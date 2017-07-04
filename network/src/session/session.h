@@ -36,6 +36,7 @@ namespace network
         virtual void on_read_packet(std::shared_ptr<packet_buffer_type> buf, unsigned short size) {}
         virtual void on_connect() {}
         virtual void on_disconnect(boost::system::error_code& ec) {}
+        virtual void on_disconnect() {}
 
         void handle_error_code(boost::system::error_code& ec);
 

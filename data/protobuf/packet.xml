@@ -4,9 +4,9 @@
 	<LOBBY start="1000">
 		<!--게임 데이터 타입위한 enum값-->
 		<GameDataType type="enum">
-			 <all_data/>
-			 <item_data/>
-			 <hero_stat_data/>
+			 <test_1/>
+			 <test_2/>
+			 <test_3/>
 		</GameDataType>
 
 		<!-- 로그인 위한 패킷-->

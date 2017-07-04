@@ -38,9 +38,12 @@ void send_packet(Session session, opcode opcode, Protobuf protobuf)
 
     if (r)
     {
-        buffer->size = buffer->size + sizeof(unsigned short) * 2;
-
+        // header size
+        buffer->size = buffer->size + sizeof(unsigned short);
         std::memcpy(buffer->buf.data(), &(buffer->size), sizeof(unsigned short));
+
+        // total packet size
+        buffer->size = buffer->size + sizeof(unsigned short);
         session->send(buffer);
     }
     else
