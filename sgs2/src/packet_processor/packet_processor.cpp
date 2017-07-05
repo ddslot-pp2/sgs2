@@ -59,5 +59,4 @@ void handle_packet(std::shared_ptr<server_session> session, buf_ptr buffer, int 
 	auto packet_num = *reinterpret_cast<opcode*>(buffer->data());
 
 	packet_handlers[to_index(packet_num)](std::move(session), std::move(buffer), size);
-
 }

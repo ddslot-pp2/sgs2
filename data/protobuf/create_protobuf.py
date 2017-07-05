@@ -12,9 +12,6 @@ BUILD_CONFIGURATION = 'Debug'
 #BUILD_CONFIGURATION = 'Release'
 
 SERVER_OUT_CPP_PATH = '../../sgs2/src/packet_processor'
-CLIENT_OUT_CPP_PATH = '../../../battle_royale/Assets/Scripts/Network/Packet'
-
-CLIENT_PACKET_ON = False
 
 # ----------------------------------
 # 서버 기준 파싱 .proto 생성
@@ -66,7 +63,6 @@ for package in root:
 
 	target.close()
 
-#opcode = 0
 #----------------------------------------------
 # 서버용 패킷 핸들러 packet_processor.h
 #----------------------------------------------
@@ -78,7 +74,7 @@ target.write('\n')
 
 target.write('#include <memory>\n')
 target.write('#include "../../../network/src/io_helper.h"\n')
-#target.write('#include "../server_session/server_session.h"\n')
+
 target.write('\n')
 
 for child in root:
@@ -93,9 +89,7 @@ target.write('\n')
 
 target.write('class server_session;\n')
 target.write('\n')
-#target.write('namespace network\n')
-#target.write('{\n')
-#target.write('\n')
+
 
 for child in root:
 	for packet in child:
@@ -132,9 +126,6 @@ target.write('#include "../server_session/server_session.h"\n')
 
 target.write('\n')
 target.write('\n')
-
-#target.write('namespace network\n')
-#target.write('{\n')
 
 target.write('template <typename T, typename = typename std::enable_if_t<std::is_base_of<::google::protobuf::Message, T>::value>>\n')
 target.write('void deserialize(std::shared_ptr<server_session> session, buf_ptr buffer, int size, std::function<void(std::shared_ptr<server_session>, const T&)> process_function)\n')
@@ -205,8 +196,6 @@ target.write('\n')
 target.write('\tpacket_handlers[to_index(packet_num)](std::move(session), std::move(buffer), size);\n')
 target.write('}\n')
 
-#target.write('}\n')
-#target.write('\n')
 target.close()
 
 
@@ -249,8 +238,6 @@ print ('create .h .cc')
 PATH = os.getcwd()
 PROTOC_PATH = '../../protobuf-master/cmake/build/solution/' + BUILD_CONFIGURATION 
 
-#CPP_OUT_PATH = SERVER_OUT_CPP_PATH + '/packet'
-#CSHARP_OUT_PATH = './'
 
 protos = []
 
@@ -266,52 +253,8 @@ for proto in protos:
 	print(proto)
 	cmd =  "protoc "  + ' -I="../../../../../data/protobuf" --cpp_out="../../../../../sgs2/src/packet_processor/packet" ' +  "../../../../../data/protobuf/" + proto
 	os.system(cmd)
-    #cmd =  "protoc "  + ' -I="../../../../../proto" --csharp_out="../../../../../proto/csharp_out/packet" ' +  "../../../../../proto/" + proto
-    #os.system(cmd)
 
 os.chdir(PATH)
-
-
-# ----------------------------------
-# 클라이언트 기준 파싱
-# ----------------------------------
-'''
-os.chdir(PROTOC_PATH)
-for proto in protos:
-	cmd =  "protoc "  + ' -I="../../../../../data/protobuf" --csharp_out="../../../../../../battle_royale/Assets/Scripts/Network/Packet" ' +  "../../../../../data/protobuf/" + proto
-	os.system(cmd)
-    #cmd =  "protoc "  + ' -I="../../../../../proto" --csharp_out="../../../../../proto/csharp_out/packet" ' +  "../../../../../proto/" + proto
-    #os.system(cmd)
-
-os.chdir(PATH)
-
-#----------------------------------------------
-# opcde.cs 생성 해주기
-#----------------------------------------------
-print ('create opcode.cs')
-target = open(CLIENT_OUT_CPP_PATH + '/' + 'opcode.cs', 'w')
-
-target.write('namespace network\n')
-target.write('{\n')
-target.write('  public enum opcode : short\n')
-target.write('  {\n')
-
-
-value = 0
-for child in root:
-	value = child.attrib['start']
-	for packet in child:
-		if 'type' not in packet.attrib and 'struct' not in packet.attrib:
-			target.write('\t' + packet.tag + ' = ' + str(value) + ',\n')
-			value = int(value) + 1
-
-
-target.write('  };\n')
-target.write('}\n')
-target.write('\n')
-target.close()
-'''
-
 
 
 # ----------------------------------

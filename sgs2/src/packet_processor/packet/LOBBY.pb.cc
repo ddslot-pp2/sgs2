@@ -124,11 +124,11 @@ void AddDescriptorsImpl() {
       "\n\013LOBBY.proto\022\005LOBBY\")\n\tCS_LOG_IN\022\n\n\002id\030"
       "\001 \001(\t\022\020\n\010password\030\002 \001(\t\":\n\tSC_LOG_IN\022\016\n\006"
       "result\030\001 \001(\010\022\021\n\ttimestamp\030\002 \001(\003\022\n\n\002ec\030\003 "
-      "\001(\t*\?\n\014GameDataType\022\014\n\010all_data\020\000\022\r\n\tite"
-      "m_data\020\001\022\022\n\016hero_stat_data\020\002b\006proto3"
+      "\001(\t*2\n\014GameDataType\022\n\n\006test_1\020\000\022\n\n\006test_"
+      "2\020\001\022\n\n\006test_3\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 196);
+      descriptor, 183);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LOBBY.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);

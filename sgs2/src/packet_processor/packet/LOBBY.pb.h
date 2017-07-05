@@ -57,15 +57,15 @@ void InitDefaults();
 }  // namespace protobuf_LOBBY_2eproto
 
 enum GameDataType {
-  all_data = 0,
-  item_data = 1,
-  hero_stat_data = 2,
+  test_1 = 0,
+  test_2 = 1,
+  test_3 = 2,
   GameDataType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   GameDataType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool GameDataType_IsValid(int value);
-const GameDataType GameDataType_MIN = all_data;
-const GameDataType GameDataType_MAX = hero_stat_data;
+const GameDataType GameDataType_MIN = test_1;
+const GameDataType GameDataType_MAX = test_3;
 const int GameDataType_ARRAYSIZE = GameDataType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* GameDataType_descriptor();
