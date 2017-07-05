@@ -7,7 +7,6 @@
 int main()
 {
     // 로케일 설정
-    // processor => process로 수정 필요!
     std::locale::global(std::locale(""));
     std::wcout.imbue(std::locale(""));
 
@@ -15,13 +14,9 @@ int main()
     register_handlers();
     network::initialize();
 
-    // 필드 생성
-    //field_manager::instance().create_fields();
-
-    //auto svr = network::server<network::server_session>::create(3000);
-
+    // 서버 생성
     tcp::endpoint endpoint(tcp::v4(), 3000);
-    auto svr = std::make_shared<network::server<server_session>>(network::io_service(), endpoint);
+    auto svr = std::make_unique<network::server<server_session>>(network::io_service(), endpoint);
 
     //network::start(8, [] {});
     network::start(8);

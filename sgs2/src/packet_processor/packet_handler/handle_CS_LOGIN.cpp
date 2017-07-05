@@ -16,7 +16,7 @@ void handle_CS_LOG_IN(std::shared_ptr<server_session> session, const LOBBY::CS_L
     auto error_message = "";
     auto result = true;
 
-    // id 와 password 기준으로 유저의 account_id를 가져와
+    // id 와 password 기준으로 유저의 account_id를 가져옴
     auto account_id = 1000;
 
     LOBBY::SC_LOG_IN send;

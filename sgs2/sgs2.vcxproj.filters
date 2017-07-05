@@ -22,15 +22,6 @@
     <Filter Include="src\packet_processor\packet\LOBBY">
       <UniqueIdentifier>{4caefc8c-8435-4ece-a116-bba5f73fc2c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\object">
-      <UniqueIdentifier>{e025ffa4-28c2-48e5-b88f-ca130bbed69b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\field">
-      <UniqueIdentifier>{ba041650-36b1-4016-bc8f-2b72f1ac286b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\component">
-      <UniqueIdentifier>{6c5e996c-00c0-463e-9943-481f594d5f40}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
