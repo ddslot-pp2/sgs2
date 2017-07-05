@@ -107,7 +107,7 @@ namespace network
                 
                 if (ec)
                 {
-                    wprintf(L"send error");
+                    wprintf(L"send error\n");
                  
                     handle_error_code(ec);
                     return;
@@ -117,7 +117,7 @@ namespace network
 
                 if (q_.empty())
                 {
-                    wprintf(L"retur q is empty");
+                    wprintf(L"retur q is empty\n");
                     return;
                 }
 
