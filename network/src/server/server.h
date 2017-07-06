@@ -22,7 +22,7 @@ namespace network
             acceptor_(io_service, endpoint),
             socket_(io_service)
         {
-            printf("서버 대기\n");
+            wprintf(L"서버 대기\n");
             do_accept();
         }
 
@@ -34,7 +34,7 @@ namespace network
             {
                 if (!ec)
                 {
-                    printf("접속 성공\n");
+                    wprintf(L"접속 성공\n");
                     socket_.set_option(boost::asio::ip::tcp::no_delay(false));
                     std::make_shared<T>(std::move(socket_))->start();
                     //sess->on_connect();

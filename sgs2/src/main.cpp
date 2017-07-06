@@ -33,7 +33,6 @@ int main()
     tcp::endpoint endpoint(tcp::v4(), 3000);
     auto svr = std::make_unique<network::server<server_session>>(network::io_service(), endpoint);
 
-    //network::start(8, [] {});
     const auto num_cpus = std::thread::hardware_concurrency();
     network::start(num_cpus);
 

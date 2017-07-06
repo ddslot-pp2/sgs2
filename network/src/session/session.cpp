@@ -5,12 +5,12 @@ namespace network
     session::session(tcp::socket socket)
         : socket_(std::move(socket)), header_(0)
     {
-        printf("session ctor called\n");
+        wprintf(L"session ctor called\n");
     }
 
     session::~session()
     {
-        printf("session dtor called\n");
+        wprintf(L"session dtor called\n");
     }
 
     void session::start()
@@ -26,10 +26,8 @@ namespace network
 
     void session::send(send_buf_ptr buf)
     {
-        //wprintf(L"@@SEND@@\n");
         q_.push(buf);
 
-        //wprintf(L"@@do_write@@\n");
         do_write();
     }
 
